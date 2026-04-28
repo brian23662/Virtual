@@ -151,7 +151,7 @@ export default function AboutPage() {
       <section className="py-20 lg:py-28">
         <div className="container-x max-w-3xl text-center">
           <h2 className="font-display text-4xl lg:text-5xl text-plum-deep tracking-tight">
-            Want to meet Linda?
+            Ready to see it in action?
           </h2>
           <p className="mt-5 text-lg text-ink/75">
             Every new client gets a free demo. It's the best way to see how we work and ask anything
