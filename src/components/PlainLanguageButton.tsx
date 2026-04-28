@@ -1,0 +1,122 @@
+"use client";
+
+import { useState } from "react";
+
+/**
+ * Plain Language Helper
+ * - A floating, persistent accessibility tool that calls our /api/plain-language route
+ * - Sends the visible page text to Claude via the Anthropic API and returns a clear,
+ *   plain-language summary that's helpful for users with cognitive disabilities,
+ *   English-language learners, and anyone who finds website copy dense.
+ *
+ * This is a deliberate accessibility differentiator — most sites don't offer this.
+ */
+export function PlainLanguageButton() {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const explain = async () => {
+    setLoading(true);
+    setError(null);
+    setSummary(null);
+    try {
+      // Pull main content text — keep it short to control cost
+      const main = document.getElementById("main-content");
+      const text = (main?.innerText ?? "").slice(0, 6000);
+
+      const res = await fetch("/api/plain-language", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) throw new Error("Could not generate summary");
+      const data = await res.json();
+      setSummary(data.summary);
+    } catch (e) {
+      setError(
+        "Sorry — we couldn't generate a plain-language version right now. Please call us at 866-440-9140 for help."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          setOpen(true);
+          if (!summary && !loading) explain();
+        }}
+        className="fixed bottom-6 right-6 z-30 group flex items-center gap-2 rounded-full bg-plum text-bone shadow-2xl px-5 py-3.5 hover:bg-plum-deep transition-all hover:-translate-y-1"
+        aria-label="Explain this page in plain language"
+      >
+        <svg className="w-5 h-5 text-teal-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+        </svg>
+        <span className="text-sm font-medium">Plain Language</span>
+      </button>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-ink/40 backdrop-blur-sm animate-fade-in p-4"
+          onClick={() => setOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="plain-language-title"
+        >
+          <div
+            className="bg-bone rounded-3xl max-w-xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="px-7 py-5 border-b border-haze-light/40 flex items-center justify-between">
+              <div>
+                <p className="eyebrow mb-1">Accessibility helper</p>
+                <h2 id="plain-language-title" className="font-display text-2xl text-plum-deep">
+                  This page in plain language
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="p-2 rounded-full hover:bg-plum/10 transition-colors"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="px-7 py-6 overflow-y-auto flex-1">
+              {loading && (
+                <div className="flex items-center gap-3 text-haze-deep">
+                  <div className="w-2 h-2 rounded-full bg-teal animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-teal animate-pulse [animation-delay:150ms]" />
+                  <div className="w-2 h-2 rounded-full bg-teal animate-pulse [animation-delay:300ms]" />
+                  <span className="text-sm">Reading this page…</span>
+                </div>
+              )}
+              {error && <p className="text-sm text-plum">{error}</p>}
+              {summary && (
+                <div className="prose prose-lg max-w-none text-ink whitespace-pre-wrap leading-relaxed">
+                  {summary}
+                </div>
+              )}
+            </div>
+
+            <div className="px-7 py-4 border-t border-haze-light/40 bg-plum/5 text-xs text-haze-deep">
+              This summary was generated by AI to make our website easier to read. It is not a
+              substitute for the original content. For specific service questions, please call us
+              at <a href="tel:8664409140" className="font-semibold text-plum underline">866-440-9140</a>.
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

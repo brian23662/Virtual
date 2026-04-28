@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-plum: #462e66;
+  --color-plum-deep: #2d1d42;
+  --color-teal: #14accc;
+  --color-teal-light: #a2dfeb;
+  --color-bone: #f4f6f6;
+  --color-ink: #252b2c;
+  --color-haze: #938c9c;
+  --color-haze-light: #bfbcc4;
+  --color-haze-deep: #6f627c;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bone text-ink font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+
+  /* Strong, accessible focus rings — non-negotiable for an a11y site */
+  :focus-visible {
+    @apply outline-none ring-2 ring-teal ring-offset-2 ring-offset-bone;
+  }
+
+  /* Skip-to-content link visible on keyboard focus */
+  .skip-link {
+    @apply absolute left-4 -top-20 z-50 rounded-md bg-plum px-4 py-2 text-bone font-medium;
+    @apply focus:top-4 transition-all;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-plum-deep;
+  }
+
+  ::selection {
+    @apply bg-teal-200 text-plum-deep;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-plum px-7 py-3.5 text-bone font-medium tracking-wide;
+    @apply transition-all duration-300 hover:bg-plum-deep hover:shadow-lg hover:-translate-y-0.5;
+    @apply focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-transparent px-7 py-3.5 text-plum font-medium tracking-wide;
+    @apply border border-plum/30 transition-all duration-300;
+    @apply hover:bg-plum hover:text-bone hover:border-plum;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-teal px-7 py-3.5 text-white font-medium tracking-wide;
+    @apply transition-all duration-300 hover:bg-teal-600 hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-teal-600;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white border border-haze-light/40 shadow-sm transition-all duration-300;
+    @apply hover:shadow-xl hover:-translate-y-1 hover:border-teal/30;
+  }
+}
+
+/* Subtle grid texture for depth */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(70, 46, 102, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(70, 46, 102, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Decorative gradient orb */
+.orb-teal {
+  background: radial-gradient(circle, rgba(20, 172, 204, 0.18), transparent 70%);
+  filter: blur(40px);
+}
+
+.orb-plum {
+  background: radial-gradient(circle, rgba(70, 46, 102, 0.18), transparent 70%);
+  filter: blur(50px);
+}
