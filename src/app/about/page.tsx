@@ -13,20 +13,20 @@ const TEAM = [
   {
     name: "Linda Sokol",
     role: "Founder & Owner",
-    photo: "/images/team/linda_headshot.jpg",
-    bio: "Linda holds a degree in Sign Language Interpreting and has worked full-time as a freelance interpreter since 2000. She holds the Educational Interpreter K-12 certificate and the RID Certificates of Interpretation and Transliteration. She founded Virtual VRI in 2009 to bring high-quality remote interpreting to clients underserved by traditional in-person agencies.",
+    photo: null,
+    bio: "Linda holds a degree in Sign Language Interpreting...",
   },
   {
     name: "Melissa Deets",
     role: "Operations & Scheduling",
-    photo: "/images/team/melissa.jpg",
-    bio: "Melissa holds a Bachelor's in Human Development and Family Studies and a Master's in Reading and Writing Instruction. A former elementary school teacher, she has watched her mother build Virtual VRI for over a decade and now leads scheduling, operations, and customer relationships.",
+    photo: null,
+    bio: "Melissa holds a Bachelor's in Human Development...",
   },
   {
     name: "Teresa Vonloh",
     role: "Co-founder & Advisor",
-    photo: null as string | null,
-    bio: "Teresa co-founded Virtual VRI with Linda in 2009. While she stepped down as co-owner in 2015, she remains an integral part of the team, providing instruction and advisory support.",
+    photo: null,
+    bio: "Teresa co-founded Virtual VRI with Linda in 2009...",
   },
 ];
 
